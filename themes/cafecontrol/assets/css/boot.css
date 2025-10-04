@@ -1,0 +1,176 @@
+/*RESET*/
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+/*VARIABLES*/
+:root {
+    --font-small: 0.875em;
+    --font-normal: 1em;
+    --font-medium: 1.2em;
+    --font-large: 1.4em;
+
+    --background: 240 10% 3.9%; /* Zinc 950 for background */
+    --foreground: 240 5% 96.1%; /* Zinc 50 for foreground */
+
+    --card: 240 10% 3.9%; /* Zinc 950 for cards */
+    --card-foreground: 240 5% 96.1%; /* Zinc 50 for card foreground */
+
+    --popover: 240 10% 3.9%; /* Zinc 950 for popovers */
+    --popover-foreground: 240 5% 96.1%; /* Zinc 50 for popover foreground */
+
+    --primary: 240 5.9% 10%; /* Zinc 900 for primary actions */
+    --primary-foreground: 0 0% 98%; /* Zinc 50 for text on primary */
+
+    --secondary: 240 3.7% 15.9%; /* Zinc 800 for secondary elements */
+    --secondary-foreground: 240 5% 96.1%; /* Zinc 50 for text on secondary */
+
+    --muted: 240 3.7% 15.9%; /* Zinc 800 for muted elements */
+    --muted-foreground: 240 5% 64.9%; /* Zinc 400 for muted text */
+
+    --accent: 240 3.7% 15.9%; /* Zinc 800 for accent */
+    --accent-foreground: 240 5% 96.1%; /* Zinc 50 for text on accent */
+
+    --destructive: 0 62.8% 30.6%; /* Red for destructive actions */
+    --destructive-foreground: 0 0% 98%; /* White for text on destructive */
+
+    --border: 240 3.7% 15.9%; /* Zinc 800 for borders */
+    --input: 240 3.7% 15.9%; /* Zinc 800 for input */
+    --ring: 240 4.9% 83.9%; /* Zinc 200 for focus rings */
+
+    --radius: 0.5rem;
+
+    --weight-light: 300;
+    --weight-normal: 400;
+    --weight-bold: 700;
+    --weight-black: 900;
+
+    --hover-duration: 0.3s;
+
+    --radius-normal: 5px;
+    --radius-medium: 10px;
+    --radius-large: 20px;
+    --radius-round: 50%;
+
+    --index-back: -1;
+    --index-fold: 2;
+    --index-menu: 3;
+    --index-modal: 4;
+}
+
+/*ELEMENTS*/
+img {
+    max-width: 100%;
+}
+
+img a {
+    border: none;
+}
+
+ul {
+    list-style: none;
+}
+
+p {
+    margin: 20px 0 0 0;
+}
+
+embed,
+video,
+iframe,
+iframe[style] {
+    max-width: 100%;
+    height: auto;
+}
+
+.embed {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.embed iframe, .embed object, .embed embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.strike {
+    text-decoration: line-through;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+    -webkit-text-fill-color: #555555 !important;
+}
+
+/*ICONS NORMALIZE*/
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    position: relative !important;
+    top: .125em !Important;
+    margin-right: .4em !Important;
+}
+
+.icon-notext:before {
+    top: 0;
+    margin-right: 0 !important;;
+}
+
+/*CONTAINER*/
+.content,
+.container {
+    display: block;
+    width: 1200px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.content {
+    padding: 60px 0;
+}
+
+/*EFFECTS*/
+.transition {
+    transition-duration: var(--hover-duration);
+}
+
+.radius {
+    border-radius: var(--radius);
+}
+
+/*GRADIENTS*/
+.gradient {
+    background-size: 100% 100%; /* Change gradient to solid color for shadcn/ui look */
+    transition-duration: 0.5s;
+}
+
+.gradient-green {
+    background-color: hsl(var(--primary));
+}
+
+.gradient-blue {
+    background-color: hsl(var(--primary));
+}
+
+.gradient-yellow {
+    background-color: hsl(var(--primary));
+}
+
+.gradient-red {
+    background-color: hsl(var(--destructive));
+}
+
+.gradient-hover:hover {
+    background-color: hsl(var(--primary-foreground)); /* Use primary-foreground for hover */
+    color: hsl(var(--primary)); /* Text color change on hover */
+}
