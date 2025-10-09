@@ -63,6 +63,18 @@
     --index-modal: 4;
 }
 
+.xdebug-error,
+.xdebug-error th,
+.xdebug-error td,
+.xdebug-error pre,
+.xe-warning,
+.xe-notice,
+.xe-fatal-error,
+.xe-parse-error {
+  color: #000 !important;   /* texto preto */
+  background: #fff !important; /* fundo branco, se quiser contraste */
+}
+
 /*ELEMENTS*/
 img {
     max-width: 100%;

@@ -8,7 +8,7 @@
             <p>Cadastre-se, lance suas contas e conte com automações poderosas para gerenciar tudo enquanto você toma um
                 bom café!</p>
             <p><span data-go=".home_optin"
-                     class="home_featured_btn gradient gradient-green gradient-hover radius transition icon-check-square-o">Criar
+                     class="home_featured_btn radius transition">Criar
                     minha conta e começar a controlar</span></p>
             <p class="features">Rápido | Simples | Gratuito</p>
         </header>

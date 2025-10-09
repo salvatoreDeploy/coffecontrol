@@ -12,6 +12,13 @@ class Web extends Controller
 
   public function home()
   {
+    $head = $this->seo->render(
+      "",
+      "",
+      "",
+      "",
+    );
+
     echo $this->view->render("home", [
       "title" => "CoffeControl - Gerencie suas finanças com o melhor café"
     ]);
