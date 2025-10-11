@@ -15,7 +15,7 @@
 <header class="main_header gradient gradient-green">
     <div class="container">
         <div class="main_header_logo">
-            <h1><a class="icon-coffee transition" title="Home" href="<?= url(); ?>">Cafe<b>Control</b></a></h1>
+            <h1><a class="icon-coffee transition" title="Home" href="<?= url(); ?>">Coffe<b>Control</b></a></h1>
         </div>
 
         <nav class="main_header_nav">

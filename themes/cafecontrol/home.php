@@ -91,7 +91,7 @@
 <article class="home_video">
     <div class="home_video_content container content">
         <header>
-            <h2>Descubra o CafeControl</h2>
+            <h2>Descubra o CoffeControl</h2>
             <span data-modal=".home_video_modal" class="icon-play-circle-o icon-notext transition"></span>
         </header>
     </div>

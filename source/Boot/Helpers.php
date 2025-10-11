@@ -149,6 +149,11 @@ function url(string $path = null): string
     
 }
 
+function url_back(): string 
+{
+    return ($_SERVER['HTTP_REFERER'] ?? url());
+}
+
 function theme(string $path = null){
     if(strpos($_SERVER['HTTP_HOST'], "localhost")){
         if($path){
