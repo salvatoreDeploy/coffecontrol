@@ -1,4 +1,4 @@
-<?php $v->layout("_theme"); ?>
+<?= $this->layout("_theme"); ?>
 
 <section class="about_page">
     <div class="about_page_content content">

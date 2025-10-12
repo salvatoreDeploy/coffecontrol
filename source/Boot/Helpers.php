@@ -149,7 +149,7 @@ function url(string $path = null): string
     
 }
 
-function url_back(): string 
+function url_back(string $path = null): string 
 {
     return ($_SERVER['HTTP_REFERER'] ?? url());
 }
