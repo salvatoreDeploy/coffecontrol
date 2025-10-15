@@ -3,6 +3,7 @@
 namespace Source\App;
 
 use Source\Core\Controller;
+use Source\Support\Pager;
 
 class Web extends Controller
 { 
@@ -16,7 +17,7 @@ class Web extends Controller
       CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
       CONF_SITE_DESC,
       url(),
-      url("/assets/images/share.jpg"),
+      theme("/assets/images/share.jpg"),
     );
 
     echo $this->view->render("home", [
@@ -39,7 +40,7 @@ class Web extends Controller
     "{$error->code} | {$error->title}",
     $error->message,
     url_back("/ooops/{$error->code}"),
-    url("/assets/images/share.jpg"),
+    theme("/assets/images/share.jpg"),
     false
    );
 
@@ -53,18 +54,57 @@ class Web extends Controller
    * Pagina About
    */
 
-  public function about()
+  public function about(): void
   {
     $head = $this->seo->render(
       "Descubra o " . CONF_SITE_NAME . " - " . CONF_SITE_DESC,
       CONF_SITE_DESC,
       url("/sobre"),
-      url("/assets/images/share.jpg"),
+      theme("/assets/images/share.jpg"),
     );
 
     echo $this->view->render("about", [
       "head" => $head,
       "video" => "5GYmqCAKAIc"
+    ]);
+  }
+
+  /**
+   * Pagina Blog
+   */
+
+  public function blog(?array $data)
+  {
+    $head = $this->seo->render(
+      "Blog - " . CONF_SITE_NAME,
+      "Em nosso blog temos dicas e informações sobre Tecnologia e Ferramentas utilizadas para melhorar suas contas. Vamos com um café?",
+      url("/blog"),
+      theme("/assets/images/share.jpg"),
+    );
+
+    $pager = new Pager(url("/blog/page/"));
+    $pager->pager(100, 10, $data['page'] ?? 1 );
+
+     echo $this->view->render("blog", [
+      "head" => $head,
+      "paginator" => $pager->render()
+    ]);
+  }
+
+  public function blogPost(array $data)
+  {
+    $postName = $data['postName'];
+
+     $head = $this->seo->render(
+      "POSTNAME - " . CONF_SITE_NAME,
+      "POST HEADLINE",
+      url("/blog/{$postName}"),
+      theme("BLOG IMAGE"),
+    );
+
+    echo $this->view->render("blog-post", [
+      "head" => $head,
+      "data" => $this->seo->data()
     ]);
   }
 
@@ -77,7 +117,7 @@ class Web extends Controller
       CONF_SITE_NAME . " - Termos de uso.",
       CONF_SITE_DESC,
       url("/termos"),
-      url("/assets/images/share.jpg"),
+      theme("/assets/images/share.jpg"),
     );
 
     echo $this->view->render("terms", [

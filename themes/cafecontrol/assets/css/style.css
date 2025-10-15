@@ -604,6 +604,22 @@ body {
     background-color: hsl(var(--primary));
 }
 
+.empty_content p {
+    margin: 20px 0
+}
+
+.empty_content_btn{
+    display: inline-block;
+    cursor: pointer;
+    padding: 15px 40px;
+    font-size: var(--font-medium);
+    color: hsl(var(--primary-foreground));
+    font-weight: var(--weight-black);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+    background-color: hsl(var(--primary));
+}
+
 /*MAIN FOOTER*/
 .main_footer {
     background: hsl(var(--background));
