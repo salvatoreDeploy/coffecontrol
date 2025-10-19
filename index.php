@@ -31,11 +31,20 @@ $route->get("/blog/page/{page}", "Web:blog");
 $route->get("/blog/{postName}", "Web:blogPost");
 
 /**
+ * Authenticate Routes
+ */
+
+$route->get("/entrar", "Web:login");
+$route->get("/recuperar", "Web:forget");
+$route->get("/cadastrar", "Web:register");
+
+/**
  * ERROR ROUTES
  */
 
 $route->namespace("Source\App")->group("/ooops");
 $route->get("/{errcode}", "Web:error");
+
 
 /**
  * ROUTE

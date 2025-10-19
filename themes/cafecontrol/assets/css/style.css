@@ -1071,7 +1071,7 @@ body {
 }
 
 .auth_form label input {
-    color: hsl(var(--foreground));
+    /* color: hsl(var(--foreground)); */
     display: block;
     width: 100%;
     font-size: var(--font-normal);
