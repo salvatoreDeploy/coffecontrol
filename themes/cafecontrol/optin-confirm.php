@@ -1,4 +1,4 @@
-<?php $v->layout("_theme"); ?>
+<?php $this->layout("_theme"); ?>
 
 <article class="optin_page">
     <div class="container content">
@@ -9,7 +9,6 @@
             <h1>Falta pouco! Confirme seu cadastro.</h1>
             <p>Enviamos um link de confirmação para seu e-mail. Acesse e siga as instruções para concluir seu cadastro
                 e comece a controlar com o CaféControl</p>
-
 
         </div>
     </div>

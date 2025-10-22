@@ -20,6 +20,11 @@ $route = new Router(url(), ":");
 $route->namespace("Source\App");
 $route->get("/", "Web:home");
 $route->get("/sobre", "Web:about");
+
+/**
+ * Services Routes
+ */
+
 $route->get("/termos", "Web:terms");
 
 /**
@@ -37,6 +42,14 @@ $route->get("/blog/{postName}", "Web:blogPost");
 $route->get("/entrar", "Web:login");
 $route->get("/recuperar", "Web:forget");
 $route->get("/cadastrar", "Web:register");
+
+
+/**
+ * Options Routes
+ */
+
+$route->get("/confirma", "Web:confirm");
+$route->get("/obrigado", "Web:success");
 
 /**
  * ERROR ROUTES

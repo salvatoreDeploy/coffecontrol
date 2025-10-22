@@ -178,4 +178,36 @@ class Web extends Controller
       "head" => $head,
     ]);
    }
+
+   /**
+   * Autenticação Cadastro
+   */
+
+   public function confirm()
+   {
+     $head = $this->seo->render(
+      "Confirme seu Cadastro - " . CONF_SITE_NAME,
+      CONF_SITE_DESC,
+      url("/confirma"),
+      theme("/assets/images/share.jpg"),
+    );
+
+    echo $this->view->render("optin-confirm", [
+      "head" => $head,
+    ]);
+   }
+
+   public function success()
+   {
+     $head = $this->seo->render(
+      "Bem-vindo(a) ao " . CONF_SITE_NAME,
+      CONF_SITE_DESC,
+      url("/obrigado"),
+      theme("/assets/images/share.jpg"),
+    );
+
+    echo $this->view->render("optin-success", [
+      "head" => $head,
+    ]);
+   }
 }
