@@ -2,12 +2,17 @@
 
 namespace Source\App;
 
+use Source\Core\Connect;
 use Source\Core\Controller;
 use Source\Support\Pager;
 
 class Web extends Controller
 { 
   public function __construct(){
+
+    /* COLOCAR site me manutenção */
+    // redirect("/ooops/problemas");
+
     parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
   }
 
@@ -30,16 +35,38 @@ class Web extends Controller
   {
    
    $error = new \stdClass();
-   $error->code = $data['errcode'];
-   $error->title =  "Ooops. Conteúdo indisponivel :/";
-   $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponivel no momento.";
-   $error->linkTitle = "Continue navegando!";
-   $error->link = url_back();
 
+   switch($data['errcode']) {
+    case "problemas":
+      $error->code = "OPS";
+      $error->title =  "Estamos enfrentando problemas!";
+      $error->message = "Parece que nosso serviço não esta disponivel no momento. Ja estamos verificando o motivo, caso precise nos envie um E-mail";
+      $error->linkTitle = "ENVIAR E-MAIL";
+      $error->link = "malito:" . CONF_MAIL_SUPPORT;
+      break;
+
+    case "manutencao":
+      $error->code = "OPS";
+      $error->title =  "Ooops. Conteúdo indisponivel :/";
+      $error->message = "Voltamos logo! Por hora estamos trabalhando para melhorar nosso conteúdo para voce voltar a controlar de forma melhor";
+      $error->linkTitle = null;
+      $error->link = null;
+      break;
+    
+    default:
+      $error->code = $data['errcode'];
+      $error->title =  "Ooops. Conteúdo indisponivel :/";
+      $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponivel no momento.";
+      $error->linkTitle = "Continue navegando!";
+      $error->link = url_back();
+      break;
+   }
+
+   
    $head = $this->seo->render(
     "{$error->code} | {$error->title}",
     $error->message,
-    url_back("/ooops/{$error->code}"),
+    url("/ooops/{$error->code}"),
     theme("/assets/images/share.jpg"),
     false
    );
@@ -180,7 +207,7 @@ class Web extends Controller
    }
 
    /**
-   * Autenticação Cadastro
+   * Confirmação de Autenticação
    */
 
    public function confirm()
@@ -196,6 +223,10 @@ class Web extends Controller
       "head" => $head,
     ]);
    }
+
+   /**
+    * Sucesso na autenticação
+    */
 
    public function success()
    {
