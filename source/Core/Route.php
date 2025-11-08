@@ -5,7 +5,7 @@ namespace Source\Core;
 /**
  * FSPHP | Class Route
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Henrique J Araujo
  * @package Source\Core
  */
 class Route

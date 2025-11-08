@@ -7,7 +7,7 @@ use CoffeeCode\Paginator\Paginator;
 /**
  * FSPHP | Class Pager
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Henrique J Araujo
  * @package Source\Support
  */
 class Pager extends Paginator
