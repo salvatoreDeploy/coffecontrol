@@ -4,6 +4,7 @@ namespace Source\App;
 
 use Source\Core\Connect;
 use Source\Core\Controller;
+use Source\Models\User;
 use Source\Support\Pager;
 
 class Web extends Controller
@@ -18,6 +19,16 @@ class Web extends Controller
 
   public function home()
   {
+    $user = new User();
+    $user->bootstrap(
+      "Henrique",
+      "Araujo",
+      "liderhenrique@gmail.com",
+      "12345678"
+    );
+
+    var_dump($user->save());
+
     $head = $this->seo->render(
       CONF_SITE_NAME . " - " . CONF_SITE_TITLE,
       CONF_SITE_DESC,
