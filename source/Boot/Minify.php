@@ -36,10 +36,8 @@
      $jsDir = scandir(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/js");
      
      foreach($jsDir as $js){
-        $jsDir = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/js/{$js}";
+        $jsFile  = __DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/assets/js/{$js}";
 
-        $jsFile = "";
-        
         if(is_file($jsFile) && pathinfo($jsFile)['extension'] == 'js'){
           $minifyJS->add($jsFile);
         }

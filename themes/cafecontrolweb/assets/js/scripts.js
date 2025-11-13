@@ -1,3 +1,5 @@
+
+
 $(function () {
     // mobile menu open
     $(".j_menu_mobile_open").click(function (e) {
@@ -50,6 +52,7 @@ $(function () {
 
     // collpase
     $(".j_collapse").click(function () {
+
         var collapse = $(this);
 
         collapse.find(".j_collapse_icon").toggleClass("icon-minus").toggleClass("icon-plus");
