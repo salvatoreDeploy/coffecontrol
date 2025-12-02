@@ -10,6 +10,7 @@ use Source\Models\Faq\Question;
 use Source\Models\Post;
 use Source\Models\User;
 use Source\Support\Pager;
+use Source\Models\Auth;
 
 class Web extends Controller
 { 
@@ -262,9 +263,43 @@ class Web extends Controller
    * Autenticação Cadastro
    */
 
-   public function register()
+   public function register(?array $data)
    {
-     $head = $this->seo->render(
+
+    if(!empty($data['csrf'])){
+      if (!csrf_verify($data)){
+        $json['message'] = $this->message->error("Erro ao enviar, favor use o formulario")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      if(in_array("", $data)){
+        $json['message'] = $this->message->info("Informe seus dados para criar sua conta")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      $auth = new Auth();
+      $user = new User();
+
+      $user->bootstrap(
+        $data['first_name'],
+        $data['last_name'],
+        $data['email'],
+        $data['password'],
+      );
+
+      if($auth->register($user)){
+        $json['redirect'] = url("/confirma");
+      }else{
+        $json['message'] = $auth->message()->render();
+      }
+
+      echo json_encode($json);
+      return;
+    }
+
+    $head = $this->seo->render(
       "Criar Conta - " . CONF_SITE_NAME,
       CONF_SITE_DESC,
       url("/registar"),

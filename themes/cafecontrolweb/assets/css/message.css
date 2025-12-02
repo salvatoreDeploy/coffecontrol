@@ -16,16 +16,20 @@
 }
 
 .message.info {
-    color: var(--color-blue);
-    border-color: var(--color-blue);
+    color: oklch(62.3% 0.214 259.815);
+    border-color: oklch(62.3% 0.214 259.815);
 }
 
 .message.warning {
-    color: var(--color-yellow);
-    border-color: var(--color-yellow);
+    color: oklch(85.2% 0.199 91.936);
+    border-color: oklch(85.2% 0.199 91.936);
 }
 
 .message.error {
-    color: var(--color-red);
-    border-color: var(--color-red);
+    color: oklch(63.7% 0.237 25.331);
+    border-color: oklch(63.7% 0.237 25.331);
+    /* soft red background using destructive HSL from theme */
+    background: oklch(63.7% 0.237 25.331);
+    /* ensure text stands out */
+    color: var(--destructive-foreground, oklch(63.7% 0.237 25.331));
 }
