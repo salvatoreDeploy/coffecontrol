@@ -98,10 +98,10 @@ define("CONF_IMAGE_QUALITY", ["jpg" => 75, "png" => 5]);
 /**
  * MAIL
  */
-define("CONF_MAIL_HOST", "");
-define("CONF_MAIL_PORT", "");
-define("CONF_MAIL_USER", "");
-define("CONF_MAIL_PASS", "");
+define("CONF_MAIL_HOST", "sandbox.smtp.mailtrap.io");
+define("CONF_MAIL_PORT", "2525");
+define("CONF_MAIL_USER", "ef3c2c7383bf81");
+define("CONF_MAIL_PASS", "770a244ad46e23");
 define("CONF_MAIL_SENDER", ["name" => "Henrique Araujo", "address" => "liderhenrique@gmail.com"]);
 define("CONF_MAIL_SUPPORT", "support@email.com.br");
 define("CONF_MAIL_OPTION_LANG", "br");
