@@ -134,3 +134,7 @@
 .icon-user-plus:before {
   content: "\46";
 }
+.icon-warning:before {
+  content: "\26A0"; /* warning symbol */;
+  font-size: 1.6em;
+}

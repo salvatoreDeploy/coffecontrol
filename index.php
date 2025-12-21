@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 
 require __DIR__ . "/vendor/autoload.php";
@@ -35,15 +36,17 @@ $route->get("/", "Web:blog");
 $route->get("/p/{page}", "Web:blog");
 $route->get("/{uri}", "Web:blogPost");
 $route->post("/buscar", "Web:blogSearch");
-$route->post("/buscar/{terms}/{page}", "Web:blogSearch");
+$route->get("/buscar/{terms}/{page}", "Web:blogSearch");
 
 /**
  * Authenticate Routes
  */
 $route->group(null);
 $route->get("/entrar", "Web:login");
-$route->get("/recuperar", "Web:forget");
+$route->post("/entrar", "Web:login");
 $route->get("/cadastrar", "Web:register");
+$route->post("/cadastrar", "Web:register");
+$route->get("/recuperar", "Web:forget");
 
 
 /**
@@ -51,7 +54,16 @@ $route->get("/cadastrar", "Web:register");
  */
 
 $route->get("/confirma", "Web:confirm");
-$route->get("/obrigado", "Web:success");
+$route->get("/obrigado/{email}", "Web:success");
+
+/* 
+* APP Route
+*/
+
+$route->group("/app");
+$route->get("/", "App:home");
+$route->get("/sair", "App:logout");
+
 
 /**
  * ERROR ROUTES

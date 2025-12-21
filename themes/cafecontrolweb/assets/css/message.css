@@ -1,0 +1,35 @@
+.message {
+    display: block;
+    margin-bottom: 20px;
+    padding: 15px;
+    text-align: center;
+    -webkit-border-radius: var(--radius-medium);
+    -moz-border-radius: var(--radius-medium);
+    border-radius: var(--radius-medium);
+    border: 1px solid #cccccc;
+    font-weight: var(--weight-bold);
+}
+
+.message.success {
+    color: var(--color-green);
+    border-color: var(--color-green);
+}
+
+.message.info {
+    color: oklch(62.3% 0.214 259.815);
+    border-color: oklch(62.3% 0.214 259.815);
+}
+
+.message.warning {
+    color: oklch(85.2% 0.199 91.936);
+    border-color: oklch(85.2% 0.199 91.936);
+}
+
+.message.error {
+    color: oklch(63.7% 0.237 25.331);
+    border-color: oklch(63.7% 0.237 25.331);
+    /* soft red background using destructive HSL from theme */
+    background: oklch(63.7% 0.237 25.331);
+    /* ensure text stands out */
+    color: var(--destructive-foreground, oklch(63.7% 0.237 25.331));
+}

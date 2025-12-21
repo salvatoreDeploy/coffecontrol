@@ -1,4 +1,5 @@
 /vendor
+/storage/images/cache
 /shared/scripts_old
 /shared/styles_old
 /themes/cafecontrolback

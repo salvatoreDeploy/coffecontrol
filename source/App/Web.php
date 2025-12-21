@@ -10,6 +10,7 @@ use Source\Models\Faq\Question;
 use Source\Models\Post;
 use Source\Models\User;
 use Source\Support\Pager;
+use Source\Models\Auth;
 
 class Web extends Controller
 { 
@@ -117,29 +118,91 @@ class Web extends Controller
       theme("/assets/images/share.jpg"),
     );
 
-    $pager = new Pager(url("/blog/page/"));
-    $pager->pager(100, 10, $data['page'] ?? 1 );
+    $blog = (new Post())->find();
 
-     echo $this->view->render("blog", [
+    $pager = new Pager(url("/blog/p/"));
+    $pager->pager($blog->count(), 9, ($data['page'] ?? 1));
+
+    echo $this->view->render("blog", [
       "head" => $head,
+      "blog" => $blog->limit($pager->limit())->offset($pager->offset())->fetch(true),
+      "paginator" => $pager->render()
+    ]);
+  }
+  
+  /**
+   * Summary of blogSearch
+   * @param array $data
+   * @return void
+   */
+  public function blogSearch(array $data)
+  {
+    if(!empty($data['s'])){
+      $search = filter_var($data['s'], FILTER_SANITIZE_STRIPPED);
+      echo json_encode(['redirect' => url("/blog/buscar/{$search}/1")]);
+      return;
+    }
+
+    if(empty($data['terms'])){
+      redirect("/blog");
+    }
+
+    $search = filter_var($data['terms'], FILTER_SANITIZE_STRIPPED);
+    $page = (filter_var($data['page'], FILTER_VALIDATE_INT) >= 1 ? $data['page'] : 1);
+
+    $head = $this->seo->render(
+      "Pesquisa por {$search} - " . CONF_SITE_NAME,
+      "Confira os resultados de sua pesquisa para {$search}",
+      url("/blog/buscar/{$search}/{$page}"),
+      theme("/assets/images/share.jpg")
+    );
+
+    $blogSearch = (new Post())->find("title LIKE :s OR subtitle LIKE :s", "s=%{$search}%");
+
+    if(!$blogSearch->count()){
+      echo $this->view->render("blog", [
+        "head" => $head,
+        "title" => "PESQUISA POR:",
+        "search"=> $search
+      ]);
+
+      return;
+    }
+
+    $pager = new Pager(url("/blog//buscar/{$search}/"));
+    $pager->pager($blogSearch->count(), 9, $page);
+
+    echo $this->view->render("blog", [
+      "head" => $head,
+      "title" => "PESQUISA POR:",
+      "search"=> $search,
+      "blog" => $blogSearch->limit($pager->limit())->offset($pager->offset())->fetch(true),
       "paginator" => $pager->render()
     ]);
   }
 
   public function blogPost(array $data)
   {
-    $postName = $data['postName'];
+     $post = (new Post())->findByUri($data['uri']);
+     
+     if(!$post){
+      redirect("/404");
+     }
+
+     $post->views += 1;
+     $post->save();
 
      $head = $this->seo->render(
-      "POSTNAME - " . CONF_SITE_NAME,
-      "POST HEADLINE",
-      url("/blog/{$postName}"),
-      theme("BLOG IMAGE"),
+      "{$post->title}" . CONF_SITE_NAME,
+      $post->subtitle,
+      url("/blog/{$post->uri}"),
+      image($post->cover, 1200, 628),
     );
 
     echo $this->view->render("blog-post", [
       "head" => $head,
-      "data" => $this->seo->data()
+      "post" => $post,
+      "related" => (new Post())->find("category = :c AND id != :i", "c={$post->category}&i={$post->id}")->order("rand()")->limit(3)->fetch(true)
     ]);
   }
 
@@ -164,8 +227,37 @@ class Web extends Controller
    * Autenticação Login
    */
 
-   public function login()
+   public function login(?array $data)
    {
+
+    if(!empty($data['csrf'])){
+
+      if(!csrf_verify($data)){
+        $json['message'] = $this->message->error("Erro ao enviar, favor use o formulario")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      if(empty($data['email']) || empty($data['password'])){
+        $json['message'] = $this->message->warning("Informe seu email e senha para entrar")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      $save = (!empty($data['save']) ? true : false);
+      $auth = new Auth();
+      $login = $auth->login($data['email'], $data['password'], $save);
+
+      if($login){
+        $json['redirect'] = url('/path');
+      }else{
+        $json['message'] = $auth->message()->render();
+      }
+
+      echo json_encode($json);
+      return;
+    }
+
     $head = $this->seo->render(
       "Entrar - " . CONF_SITE_NAME,
       CONF_SITE_DESC,
@@ -175,6 +267,7 @@ class Web extends Controller
 
     echo $this->view->render("auth-login", [
       "head" => $head,
+      "cookie" => filter_input(INPUT_COOKIE, "authEmail")
     ]);
    }
 
@@ -200,9 +293,43 @@ class Web extends Controller
    * Autenticação Cadastro
    */
 
-   public function register()
+   public function register(?array $data)
    {
-     $head = $this->seo->render(
+
+    if(!empty($data['csrf'])){
+      if (!csrf_verify($data)){
+        $json['message'] = $this->message->error("Erro ao enviar, favor use o formulario")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      if(in_array("", $data)){
+        $json['message'] = $this->message->info("Informe seus dados para criar sua conta")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      $auth = new Auth();
+      $user = new User();
+
+      $user->bootstrap(
+        $data['first_name'],
+        $data['last_name'],
+        $data['email'],
+        $data['password'],
+      );
+
+      if($auth->register($user)){
+        $json['redirect'] = url("/confirma");
+      }else{
+        $json['message'] = $auth->message()->render();
+      }
+
+      echo json_encode($json);
+      return;
+    }
+
+    $head = $this->seo->render(
       "Criar Conta - " . CONF_SITE_NAME,
       CONF_SITE_DESC,
       url("/registar"),
@@ -227,26 +354,48 @@ class Web extends Controller
       theme("/assets/images/share.jpg"),
     );
 
-    echo $this->view->render("optin-confirm", [
+    echo $this->view->render("optin", [
       "head" => $head,
+      "data" => (object) [
+        "title" => "Falta pouco! Confirme seu cadastro.",
+        "desc" => "Enviamos um link de confirmação para seu e-mail. Acesse e siga as instruções para concluir seu cadastro e comece a controlar com o CaféControl",
+        "image" => theme("/assets/images/optin-confirm.jpg")
+      ]
     ]);
    }
 
    /**
     * Sucesso na autenticação
+    * @param array $data
     */
 
-   public function success()
+   public function success(array $data)
    {
-     $head = $this->seo->render(
+
+    $email = base64_decode($data["email"]);
+    $user = (new User())->findByEmail($email);
+
+    if($user && $user->status != "confirmed"){
+      $user->status = "confirmed";
+      $user->save();
+    }
+
+    $head = $this->seo->render(
       "Bem-vindo(a) ao " . CONF_SITE_NAME,
       CONF_SITE_DESC,
       url("/obrigado"),
       theme("/assets/images/share.jpg"),
     );
 
-    echo $this->view->render("optin-success", [
+    echo $this->view->render("optin", [
       "head" => $head,
+      "data" => (object) [
+        "title" => "Tudo pronto. Você já pode controlar :)",
+        "desc" => "Bem-vindo(a) ao seu controle de contas, vamos tomar um café?",
+        "image" => theme("/assets/images/optin-success.jpg"),
+        "link" => url("/entrar"),
+        "linkTitle" => "Fazer Login"
+      ]
     ]);
    }
 }

@@ -185,7 +185,7 @@ abstract class Model
      */
     public function limit(int $limit): Model
     {
-        $this->order = " LIMIT {$limit}";
+        $this->limit = " LIMIT {$limit}";
         return $this;
     }
 
@@ -196,7 +196,7 @@ abstract class Model
      */
     public function offset(int $offset): Model
     {
-        $this->order = " OFFSET {$offset}";
+        $this->offset = " OFFSET {$offset}";
         return $this;
     }
 

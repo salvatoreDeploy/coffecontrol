@@ -26,6 +26,12 @@ define("CONF_SITE_TITLE", "Controle suas contas degustando o melhor café");
 define("CONF_SITE_DESC", "O CoffeControl é um gerenciador de contas simples, poderoso e gratuito. O prazer de tomar um café e ter o controle total de suas contas.");
 define("CONF_SITE_LANG", "pt_BR");
 define("CONF_SITE_DOMAIN", "developerservice.shop");
+define("CONF_SITE_ADDR_STREET", "Rua Jose Luiz Regal");
+define("CONF_SITE_ADDR_NUMBER", "105");
+define("CONF_SITE_ADDR_COMPLEMENT", "");
+define("CONF_SITE_ADDR_CITY", "Sorocaba");
+define("CONF_SITE_ADDR_STATE", "SP");
+define("CONF_SITE_ADDR_ZIPCODE", "18074-135");
 
 /**
  * SOCIAL
@@ -61,11 +67,11 @@ define("CONF_PASSWD_OPTION", ["cost" => 10]);
 /**
  * MESSAGE
  */
-define("CONF_MESSAGE_CLASS", "trigger");
-define("CONF_MESSAGE_INFO", "info");
-define("CONF_MESSAGE_SUCCESS", "success");
-define("CONF_MESSAGE_WARNING", "warning");
-define("CONF_MESSAGE_ERROR", "error");
+define("CONF_MESSAGE_CLASS", "message");
+define("CONF_MESSAGE_INFO", "info icon-info");
+define("CONF_MESSAGE_SUCCESS", "success icon-check-square-o");
+define("CONF_MESSAGE_WARNING", "warning icon-warning");
+define("CONF_MESSAGE_ERROR", "error icon-warning");
 
 /**
  * VIEW
@@ -73,6 +79,7 @@ define("CONF_MESSAGE_ERROR", "error");
 define("CONF_VIEW_PATH", __DIR__ . "/../../shared/views");
 define("CONF_VIEW_EXT", "php");
 define("CONF_VIEW_THEME", "cafecontrolweb");
+define("CONF_VIEW_APP", "cafecontrolapp");
 
 /**
  * UPLOAD
@@ -92,11 +99,11 @@ define("CONF_IMAGE_QUALITY", ["jpg" => 75, "png" => 5]);
 /**
  * MAIL
  */
-define("CONF_MAIL_HOST", "smtp.sendgrid.net");
-define("CONF_MAIL_PORT", "587");
-define("CONF_MAIL_USER", "apikey");
-define("CONF_MAIL_PASS", "**************************");
-define("CONF_MAIL_SENDER", ["name" => "Robson V. Leite", "address" => "cursos@upinside.com.br"]);
+define("CONF_MAIL_HOST", "sandbox.smtp.mailtrap.io");
+define("CONF_MAIL_PORT", "2525");
+define("CONF_MAIL_USER", "ef3c2c7383bf81");
+define("CONF_MAIL_PASS", "770a244ad46e23");
+define("CONF_MAIL_SENDER", ["name" => "Henrique Araujo", "address" => "liderhenrique@gmail.com"]);
 define("CONF_MAIL_SUPPORT", "support@email.com.br");
 define("CONF_MAIL_OPTION_LANG", "br");
 define("CONF_MAIL_OPTION_HTML", true);
