@@ -273,9 +273,10 @@ class Web extends Controller
 
    /**
    * Autenticação Recuperação
+   * @param null|array $data
    */
 
-   public function forget()
+   public function forget(?array $data)
    {
      $head = $this->seo->render(
       "Recuperar Senha - " . CONF_SITE_NAME,

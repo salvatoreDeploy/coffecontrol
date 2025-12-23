@@ -74,6 +74,13 @@ class Auth extends Model
     return true;
   }
 
+  /**
+   * Summary of login
+   * @param string $email
+   * @param string $password
+   * @param mixed $save
+   * @return bool
+   */
   public function login(string $email, string $password, $save = false):bool
   {
     if(!is_email($email)){
@@ -112,6 +119,39 @@ class Auth extends Model
     // LOGIN
     (new Session())->set("authUser", $user->id);
     $this->message->success("Login efetuado com sucesso!")->flash();
+    return true;
+  }
+
+  /**
+   * Summary of forget
+   * @param string $email
+   * @return bool
+   */
+  public function forget(string $email): bool
+  {
+    $user = (new User())->findByEmail($email);
+
+    if(!$user){
+      $this->message->warning("O e-mail informado não esta cadastrado");
+      return false;
+    }
+
+    $user->forget = md5(uniqid(rand(), true));
+    $this->safe();
+
+    $view = new View("/../../shared/views/email");
+    $message = $view->render("", [
+      "first_name" => $user->first_name,
+      "forget_link" => $user->forget
+    ]);
+
+    (new Email())->bootstrap(
+      "Recupere sua senha no " . CONF_SITE_NAME,
+      $message,
+      $user->email,
+      "{$user->first_name} {$user->last_name}"
+    )->send();
+
     return true;
   }
 
