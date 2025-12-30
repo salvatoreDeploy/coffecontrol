@@ -139,10 +139,10 @@ class Auth extends Model
     $user->forget = md5(uniqid(rand(), true));
     $this->safe();
 
-    $view = new View("/../../shared/views/email");
-    $message = $view->render("", [
+    $view = new View(__DIR__ . "/../../shared/views/email");
+    $message = $view->render("forget", [
       "first_name" => $user->first_name,
-      "forget_link" => $user->forget
+      "forget_link" => url("/recuperar/{$user->email}|{$user->forget}")
     ]);
 
     (new Email())->bootstrap(
