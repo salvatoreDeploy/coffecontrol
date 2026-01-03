@@ -50,8 +50,9 @@ $route->post("/cadastrar", "Web:register");
 
 $route->get("/recuperar", "Web:forget");
 $route->post("/recuperar", "Web:forget");
-$route->get("/recuperar/{code}", "Web:forgetReset");
-$route->post("/recuperar/resetar", "Web:forgetReset");
+
+$route->get("/recuperar/{code}", "Web:reset");
+$route->post("/recuperar/resetar", "Web:reset");
 
 
 /**

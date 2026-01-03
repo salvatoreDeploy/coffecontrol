@@ -317,6 +317,48 @@ class Web extends Controller
     ]);
    }
 
+    public function reset(?array $data)
+   {
+    /* if(!empty($data['csrf'])){
+
+      if(!csrf_verify($data)){
+        $json['message'] = $this->message->error("Erro ao enviar, favor use o formulario")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      if(empty($data["email"])){
+        $json["message"] = $this->message->info("Informe seu e-mail para continuar")->render();
+        echo json_encode($json);
+        return;
+      }
+
+      $auth = new Auth();
+
+      if($auth->forget($data['email'])){
+        $json['message'] =  $this->message->success("Acesse seu e-mail para recuperar a senha")->render();
+      }else{
+        $json["message"] = $auth->message()->render();
+      }
+
+      echo json_encode($json);
+      return;
+      
+    }   */
+
+     $head = $this->seo->render(
+      "Crie sua nova senha no - " . CONF_SITE_NAME,
+      CONF_SITE_DESC,
+      url("/recuperar"),
+      theme("/assets/images/share.jpg"),
+    );
+
+    echo $this->view->render("auth-reset", [
+      "head" => $head,
+      "code" => $data["code"]
+    ]);
+   }
+
    /**
    * Autenticação Cadastro
    */
