@@ -278,6 +278,7 @@ class Web extends Controller
 
    public function forget(?array $data)
    {
+
     if(!empty($data['csrf'])){
 
       if(!csrf_verify($data)){
@@ -319,7 +320,7 @@ class Web extends Controller
 
     public function reset(?array $data)
    {
-    /* if(!empty($data['csrf'])){
+    if(!empty($data['csrf'])){
 
       if(!csrf_verify($data)){
         $json['message'] = $this->message->error("Erro ao enviar, favor use o formulario")->render();
@@ -327,16 +328,20 @@ class Web extends Controller
         return;
       }
 
-      if(empty($data["email"])){
-        $json["message"] = $this->message->info("Informe seu e-mail para continuar")->render();
+      if(empty($data["password"]) || empty($data["password_repeat"])){
+        $json["message"] = $this->message->info("Informe e repita a senha para continuar")->render();
         echo json_encode($json);
         return;
       }
 
+      $codeDecoded = urldecode($data["code"]);
+
+      list($email, $code) = explode("|", $codeDecoded);
       $auth = new Auth();
 
-      if($auth->forget($data['email'])){
-        $json['message'] =  $this->message->success("Acesse seu e-mail para recuperar a senha")->render();
+      if($auth->reset($email, $code, $data["password"], $data["password_repeat"])){
+        $this->message->success("Senha alterada com sucesso. Vamos Controlar")->flash();
+        $json["redirect"] = url("/entrar");
       }else{
         $json["message"] = $auth->message()->render();
       }
@@ -344,7 +349,7 @@ class Web extends Controller
       echo json_encode($json);
       return;
       
-    }   */
+    }  
 
      $head = $this->seo->render(
       "Crie sua nova senha no - " . CONF_SITE_NAME,

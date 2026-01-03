@@ -123,6 +123,13 @@ class Auth extends Model
   }
 
   /**
+   * TODO:
+   * 
+   * Refatorar para não usar o email na construção do url
+   * Ex: /recuperar?token=udhsudisahdus
+   */
+
+  /**
    * Summary of forget
    * @param string $email
    * @return bool
@@ -137,13 +144,15 @@ class Auth extends Model
     }
 
     $user->forget = md5(uniqid(rand(), true));
-    $this->safe();
+    $user->save();
 
     $view = new View(__DIR__ . "/../../shared/views/email");
     $message = $view->render("forget", [
       "first_name" => $user->first_name,
       "forget_link" => url("/recuperar/{$user->email}|{$user->forget}")
     ]);
+
+    
 
     (new Email())->bootstrap(
       "Recupere sua senha no " . CONF_SITE_NAME,
@@ -172,7 +181,7 @@ class Auth extends Model
       return false;
     }
 
-     if(!$user->forget != $code){
+     if($user->forget != $code){
       $this->message->error("Desculpe, mas o código de verificação não é valido");
       return false;
     }
