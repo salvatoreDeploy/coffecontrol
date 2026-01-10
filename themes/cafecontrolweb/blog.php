@@ -7,7 +7,7 @@
         <form name="search" action="<?= url("/blog/buscar"); ?>" method="post" enctype="multipart/form-data">
             <label>
                 <input type="text" name="s" placeholder="Encontre um artigo:" required/>
-                <button class="icon-search icon-notext"></button>
+                <button type="submit" class="icon-search icon-notext"></button>
             </label>
         </form>
     </header>

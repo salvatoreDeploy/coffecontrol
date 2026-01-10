@@ -36,7 +36,7 @@ $route->get("/", "Web:blog");
 $route->get("/p/{page}", "Web:blog");
 $route->get("/{uri}", "Web:blogPost");
 $route->post("/buscar", "Web:blogSearch");
-$route->get("/buscar/{terms}/{page}", "Web:blogSearch");
+$route->get("/buscar", "Web:blogSearch");
 
 /**
  * Authenticate Routes

@@ -136,7 +136,8 @@ input:-webkit-autofill {
 
 .icon-notext:before {
     top: 0;
-    margin-right: 0 !important;;
+    margin-right: 0 !important;
+    
 }
 
 /*CONTAINER*/

@@ -138,38 +138,82 @@ class Web extends Controller
   public function blogSearch(array $data)
   {
     if(!empty($data['s'])){
-      $search = filter_var($data['s'], FILTER_SANITIZE_STRIPPED);
-      echo json_encode(['redirect' => url("/blog/buscar/{$search}/1")]);
-      return;
+      $search = trim($data['s']);
+
+        echo json_encode([
+            'redirect' => url("/blog/buscar?terms=" . urlencode($search) . "&page=1")
+        ]);
+        return;
     }
 
-    if(empty($data['terms'])){
-      redirect("/blog");
+    // 🔹 acesso direto sem termo
+    $search = $data['terms'] ?? filter_input(INPUT_GET, 'terms') ?? null;
+    $page = $data['page'] ?? filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?? 1;
+
+    if (empty($search)) {
+        echo $this->view->render("blog", [
+            "head" => $this->seo->render(
+                "Pesquisa - " . CONF_SITE_NAME,
+                "Nenhum termo informado para busca.",
+                url("/blog/buscar"),
+                theme("/assets/images/share.jpg")
+            ),
+            "title" => "PESQUISA",
+            "search" => "'Nenhum termo informado.'",
+            "blog" => [],
+            "paginator" => null
+        ]);
+        return;
     }
 
-    $search = filter_var($data['terms'], FILTER_SANITIZE_STRIPPED);
-    $page = (filter_var($data['page'], FILTER_VALIDATE_INT) >= 1 ? $data['page'] : 1);
+    // 🔹 tratamento seguro
+    $search = $data['terms'] ?? filter_input(INPUT_GET, 'terms') ?? null;
 
+    if ($search === null) {
+        echo $this->view->render("blog", [
+            "head" => $this->seo->render(
+                "Pesquisa - " . CONF_SITE_NAME,
+                "Nenhum termo informado para busca.",
+                url("/blog/buscar"),
+                theme("/assets/images/share.jpg")
+            ),
+            "title" => "PESQUISA",
+            "search" => "Nenhum termo informado.",
+            "blog" => [],
+            "paginator" => null
+        ]);
+        return;
+    }
+
+    $page = $data['page'] ?? filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?? 1;
+
+    // 🔹 SEO
     $head = $this->seo->render(
-      "Pesquisa por {$search} - " . CONF_SITE_NAME,
-      "Confira os resultados de sua pesquisa para {$search}",
-      url("/blog/buscar/{$search}/{$page}"),
-      theme("/assets/images/share.jpg")
+        "Pesquisa por {$search} - " . CONF_SITE_NAME,
+        "Confira os resultados de sua pesquisa para {$search}",
+        url("/blog/buscar?terms=" . urlencode($search) . "&page={$page}"),
+        theme("/assets/images/share.jpg")
     );
 
-    $blogSearch = (new Post())->find("title LIKE :s OR subtitle LIKE :s", "s=%{$search}%");
+    // 🔹 busca no banco
+    $blogSearch = (new Post())->find(
+        "MATCH(title, subtitle) AGAINST(:s)",
+        "s={$search}"
+    );
 
-    if(!$blogSearch->count()){
-      echo $this->view->render("blog", [
-        "head" => $head,
-        "title" => "PESQUISA POR:",
-        "search"=> $search
-      ]);
-
-      return;
+    if (!$blogSearch->count()) {
+        echo $this->view->render("blog", [
+            "head"   => $head,
+            "title"  => "PESQUISA POR:",
+            "search" => $search
+        ]);
+        return;
     }
 
-    $pager = new Pager(url("/blog//buscar/{$search}/"));
+    // 🔹 pager
+    $pager = new Pager(
+        url("/blog/buscar?terms=" . urlencode($search) . "&page=")
+    );
     $pager->pager($blogSearch->count(), 9, $page);
 
     echo $this->view->render("blog", [
@@ -249,7 +293,7 @@ class Web extends Controller
       $login = $auth->login($data['email'], $data['password'], $save);
 
       if($login){
-        $json['redirect'] = url('/path');
+        $json['redirect'] = url('/app');
       }else{
         $json['message'] = $auth->message()->render();
       }

@@ -971,6 +971,7 @@ body {
 }
 
 .blog_page_header form button {
+    background: hsl(var(--input));
     padding: 0 20px 0 0;
     font-size: var(--font-medium);
     border: none;
