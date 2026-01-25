@@ -11,13 +11,21 @@ use Source\Core\Model;
 class Post extends Model
 {
   /**
+   * Summary of all
+   * @var bool
+   */
+  private $all;
+
+  /**
    * Post __construct
    * @param string $entity
    * @param array $protected
    * @param array $required
+   * @param bool $all = ignore status and post_at
    */
-  public function __construct()
+  public function __construct(bool $all = false)
   {
+    $this->all = $all;
     parent::__construct("posts", ["id"], ["title", "id" ,"subtitle", "content"]);
   }
 
@@ -30,9 +38,11 @@ class Post extends Model
    */
   public function find(?string $terms = null, ?string $params = null, string $columns = "*"): Model
   {
-    $terms = "status = :status AND post_at <= NOW()" . ($terms ? " AND {$terms}" : "");
-    $params = "status=post" . ($params ? "&{$params}" : "");
-
+    if(!$this->all){
+      $terms = "status = :status AND post_at <= NOW()" . ($terms ? " AND {$terms}" : "");
+      $params = "status=post" . ($params ? "&{$params}" : "");
+    }
+    
     return parent::find($terms, $params, $columns);
   }
 

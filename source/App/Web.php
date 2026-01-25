@@ -225,6 +225,41 @@ class Web extends Controller
     ]);
   }
 
+  public function blogCategory(array $data){
+    
+   $categoryQueryParams = $data['category'] ?? filter_input(INPUT_GET, 'category') ?? null;
+    
+   $category = (new Category())->findByUri($categoryQueryParams);
+
+   if(!$categoryQueryParams){
+      redirect("/blog");
+   }
+
+   $blogCategory = (new Post())->find("category = :c", "c={$category->id}");
+
+   $page = $data['page'] ?? filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?? 1;
+   $pager = new Pager(
+        url("/blog/buscar/categoria?category=" . urlencode($category->uri) . "&page=")
+    );
+   $pager->pager($blogCategory->count(), 9, $page);
+
+    // 🔹 SEO
+    $head = $this->seo->render(
+        "Artigos em {$category->title} - " . CONF_SITE_NAME,
+        $category->description,
+        url("/blog/buscar/categoria?category=" . urlencode($category->uri) . "&page={$page}"),
+        ($category->cover ? image($category->cover,1200, 628) : theme("assets/images/share.jpg"))
+    );
+
+     echo $this->view->render("blog", [
+      "head" => $head,
+      "title" => "Artigos em {$category->title}",
+      "desc"=> $category->description,
+      "blog" => $blogCategory->limit($pager->limit())->offset($pager->offset())->order("post_at DESC")->fetch(true),
+      "paginator" => $pager->render()
+    ]);
+  }
+
   public function blogPost(array $data)
   {
      $post = (new Post())->findByUri($data['uri']);
