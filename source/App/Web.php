@@ -9,6 +9,7 @@ use Source\Models\Faq\Channel;
 use Source\Models\Faq\Question;
 use Source\Models\Post;
 use Source\Models\User;
+use Source\Support\Email;
 use Source\Support\Pager;
 use Source\Models\Auth;
 
@@ -20,6 +21,14 @@ class Web extends Controller
     // redirect("/ooops/problemas");
 
     parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
+
+    $email = new Email();
+    $email->bootstrap(
+      "Teste de fila de e-mail ".time(),
+      "Este é apenas um teste de envio",
+      "liderhenrique@gmail.com",
+      "Henrique J. Araujo"
+    )->sendQueue();
   }
 
   public function home()
